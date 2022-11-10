@@ -1,5 +1,7 @@
 using ApiApplication.Auth;
 using ApiApplication.Database;
+using ApiApplication.Middlewares;
+using ApiApplication.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -44,6 +46,12 @@ namespace ApiApplication
                 options.RequireAuthenticatedSignIn = true;                
                 options.DefaultScheme = CustomAuthenticationSchemeOptions.AuthenticationScheme;
             });
+
+            var s3Setting = Configuration.GetSection("IMDB");
+            services.Configure<ImdbSetting>(s3Setting);
+
+            services.AddSwaggerGen();
+
             services.AddControllers();
         }
 
@@ -52,6 +60,8 @@ namespace ApiApplication
         {
             if (env.IsDevelopment())
             {
+                app.UseSwagger();
+                app.UseSwaggerUI();
                 app.UseDeveloperExceptionPage();                
             }
 
@@ -60,7 +70,8 @@ namespace ApiApplication
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+            app.UseMiddleware<ExecutionTrackingMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
