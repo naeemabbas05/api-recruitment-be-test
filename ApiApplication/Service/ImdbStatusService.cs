@@ -24,7 +24,6 @@ namespace ApiApplication.Service
         public Task StartAsync(CancellationToken cancellationToken)
         {
             timer = new Timer(o => {
-                logger.LogInformation($"IMDB STATUS Api is working");
                 //action
                 var ping = new System.Net.NetworkInformation.Ping();
 

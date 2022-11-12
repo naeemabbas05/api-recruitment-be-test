@@ -40,11 +40,19 @@ namespace ApiApplication
             });
             services.AddTransient<IShowtimesRepository, ShowtimesRepository>();
             services.AddSingleton<ICustomAuthenticationTokenService, CustomAuthenticationTokenService>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Read", policy => policy.RequireClaim("IsGet"));
+                options.AddPolicy("Write", policy => policy.RequireClaim("IsPost"));
+            });
+
             services.AddAuthentication(options =>
             {
                 options.AddScheme<CustomAuthenticationHandler>(CustomAuthenticationSchemeOptions.AuthenticationScheme, CustomAuthenticationSchemeOptions.AuthenticationScheme);
                 options.RequireAuthenticatedSignIn = true;                
                 options.DefaultScheme = CustomAuthenticationSchemeOptions.AuthenticationScheme;
+
             });
 
             var s3Setting = Configuration.GetSection("IMDB");
@@ -53,6 +61,7 @@ namespace ApiApplication
             services.AddSwaggerGen();
 
             services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

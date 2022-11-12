@@ -1,9 +1,11 @@
 ﻿using ApiApplication.Database;
 using ApiApplication.Database.Entities;
 using ApiApplication.Wrappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,9 +21,9 @@ namespace ApiApplication.Controllers
             _showtimesRepository = showtimesRepository;
         }
 
-
+        [Authorize(Policy = "Read")]
         [HttpGet]
-        public IActionResult Get(string movieName,string date)
+        public IActionResult Get([FromHeader(Name = "ApiKey")][Required] string token, string movieName,string date)
         {
             var response = new Response<IEnumerable<ShowtimeEntity>>();
 
@@ -50,29 +52,29 @@ namespace ApiApplication.Controllers
             return Ok(response);
 
         }
-
+        [Authorize(Policy = "Write")]
         [HttpPost]
-        public async Task<IActionResult> Post(ShowtimeEntity showtime)
+        public async Task<IActionResult> Post([FromHeader(Name = "ApiKey")][Required] string token, ShowtimeEntity showtime)
         {
             var response = await _showtimesRepository.Add(showtime);
             return Ok(response);
         }
-
+        [Authorize(Policy = "Write")]
         [HttpPut]
-        public async Task<IActionResult> Put(ShowtimeEntity showtime)
+        public async Task<IActionResult> Put([FromHeader(Name = "ApiKey")][Required] string token, ShowtimeEntity showtime)
         {
             var response = await _showtimesRepository.Update(showtime);
             return Ok(response);
         }
-
+        [Authorize(Policy = "Write")]
         [HttpPatch]
-        public async Task<IActionResult> Patch()
+        public async Task<IActionResult> Patch([FromHeader(Name = "ApiKey")][Required] string token)
         {
             throw new NotSupportedException();
         }
-
+        [Authorize(Policy = "Write")]
         [HttpDelete]
-        public async Task<IActionResult> Delete(int Id)
+        public async Task<IActionResult> Delete([FromHeader(Name = "ApiKey")][Required] string token, int Id)
         {
             var response = await _showtimesRepository.Delete(Id);
             return Ok(response);

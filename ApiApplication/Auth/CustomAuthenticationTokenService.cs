@@ -14,11 +14,17 @@ namespace ApiApplication.Auth
 
                 var splitedData = decodedString.Split(new char[] { '|' });
 
-                return new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-                {
+                var claims = new List<Claim>() {
                     new Claim(ClaimTypes.NameIdentifier, splitedData[0]),
-                    new Claim(ClaimTypes.Role, splitedData[1]),
-                }, CustomAuthenticationSchemeOptions.AuthenticationScheme));
+                    new Claim(ClaimTypes.Role, splitedData[1])};
+
+                if (splitedData[3].Equals("1") || splitedData[3].ToLower().Equals("true")) {
+                    claims.Add(new Claim(splitedData[2], splitedData[3]));
+                }
+
+
+
+                return new ClaimsPrincipal(new ClaimsIdentity(claims, CustomAuthenticationSchemeOptions.AuthenticationScheme));
             }
             catch (System.Exception ex)
             {

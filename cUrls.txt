@@ -1,2 +1,61 @@
 Please add the cURLs of your tests here:
 
+curl --location --request GET 'https://localhost:7629/api/Showtime' \
+--header 'ApiKey: MTIzfGFiY2R8SXNHZXR8MQ==' \
+--data-raw ''
+
+curl --location --request GET 'https://localhost:7629/api/Showtime?movieName=Ince' \
+--header 'ApiKey: MTIzfGFiY2R8SXNHZXR8MQ==' \
+--data-raw ''
+
+curl --location --request GET 'https://localhost:7629/api/Showtime?date=2022-03-01' \
+--header 'ApiKey: MTIzfGFiY2R8SXNHZXR8MQ==' \
+--data-raw ''
+
+curl --location --request POST 'https://localhost:7629/api/Showtime' \
+--header 'ApiKey: MTIzfGFiY2R8SXNQb3N0fDE=' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "movie": {
+    "imdbId": "tt0241527"
+  },
+  "startDate": "2022-11-12",
+  "endDate": "2022-11-20",
+  "schedule": [
+    "12:00",
+    "11:00"
+  ],
+  "auditoriumId": 3
+}'
+
+curl --location --request PUT 'https://localhost:7629/api/Showtime' \
+--header 'ApiKey: MTIzfGFiY2R8SXNQb3N0fDE=' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+        "id": 2,
+        "movie": {
+            "id": 2,
+            "title": "Harry Potter and the Sorcerer'\''s Stone",
+            "imdbId": "tt0241527",
+            "stars": "Daniel Radcliffe, Rupert Grint, Richard Harris",
+            "releaseDate": "2001-11-16T00:00:00",
+            "showtimeId": 2
+        },
+        "startDate": "2022-11-12T00:00:00",
+        "endDate": "2022-11-20T00:00:00",
+        "schedule": [
+            "12:00"
+        ],
+        "auditoriumId": 3
+    }'
+
+
+curl --location --request DELETE 'https://localhost:7629/api/Showtime?Id=2' \
+--header 'ApiKey: MTIzfGFiY2R8SXNQb3N0fDE=' \
+--header 'Content-Type: application/json' \
+--data-raw ']'
+
+curl --location --request PATCH 'https://localhost:7629/api/Showtime' \
+--header 'ApiKey: MTIzfGFiY2R8SXNQb3N0fDE=' \
+--header 'Content-Type: application/json' \
+--data-raw ']'
