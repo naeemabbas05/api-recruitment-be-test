@@ -1,17 +1,19 @@
 ﻿using ApiApplication.Database.Entities;
+using ApiApplication.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace ApiApplication.Database
 {
     public interface IShowtimesRepository
     {
-        IEnumerable<ShowtimeEntity> GetCollection();
-        IEnumerable<ShowtimeEntity> GetCollection(Func<IQueryable<ShowtimeEntity>, bool> filter);
-        ShowtimeEntity GetByMovie(Func<IQueryable<MovieEntity>, bool> filter);
-        ShowtimeEntity Add(ShowtimeEntity showtimeEntity);
-        ShowtimeEntity Update(ShowtimeEntity showtimeEntity);
-        ShowtimeEntity Delete(int id);
+        Response<IEnumerable<ShowtimeEntity>> GetCollection();
+        Response<IEnumerable<ShowtimeEntity>> GetCollection(Expression<Func<ShowtimeEntity, bool>> filter);
+        Task<Response<ShowtimeEntity>> Add(ShowtimeEntity showtimeEntity);
+        Task<Response<ShowtimeEntity>> Update(ShowtimeEntity showtimeEntity);
+        Task<Response<ShowtimeEntity>> Delete(int id);
     }
 }
